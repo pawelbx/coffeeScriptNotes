@@ -1,0 +1,125 @@
+#+TITLE: Chapter 2 - CoffeeScript Syntax
+* CoffeeScript Syntax
+- no semicolons
+- comments start with hash
+- multi line comments are enclosed by three # symbols
+- curly braces can be replaces with a tab character
+** Variables & Scope
+- all scripts are wrapped inside an anonymous function
+- no explicit support for global variables (only by creating a
+  variable on the global object)
+** Functions
+- the keyword function is replaced with: "->"
+- last expression in function is implicitly returned
+*** Function arguments
+- specify arguments inside parentheses and before the arrow
+
+- supports default arguments:
+#+BEGIN_SRC cs
+times = (a = 1, b = 2) -> a * b
+#+END_SRC
+- variable number of arguments by ellipses:
+#+BEGIN_SRC cs
+sum = (nums...) -> #nums is an actual array of all arguments passed to function
+#+END_SRC
+*** Function invocation
+- parentheses are optional for function invocation unless the
+  function does not take any parameters
+*** Function context
+- the fat arrow function: => ensures function context will be bound
+  to local one (like underscore bind)
+#+BEGIN_SRC cs
+
+#+END_SRC
+** Object Literals & Array definition
+- Three possible styles for creating object literals:
+  - Same as js
+  - without braces
+  - using new lines and indenting instead of placing commas:
+#+BEGIN_SRC cs
+object1 = {one: 1, two: 2}
+
+# Without braces
+object2 = one: 1, two: 2
+
+# Using new lines instead of commas
+object3 = 
+  one: 1
+  two: 2
+#+END_SRC
+- Arrays require rectangular brackets, but newlines and indentation
+  can be used instead of the comma
+** Flow Control
+- parenthesis are optional
+- conditional operators (? :) are replaced by "then" and "else". The
+  "else" is optional
+- allows suffixed if statement:
+#+BEGIN_SRC cs
+alert "cold" if true #alerts cold
+#+END_SRC
+- == and != are converted to === and !==
+- can use "not" in place of "!"
+- supports "unless" statement
+- can use "is" in place of "==="
+- can use "isnt" in place of "!=="
+** String interpolation
+- supports ruby style string interpolation using #{}
+#+BEGIN_SRC cs
+x = "World"
+"Hello #{x}" # prints Hello World
+#+END_SRC
+- multiline strings without need for "+" operator
+** Loops and Comprehensions
+- Loop in CS:
+#+BEGIN_SRC cs
+"car #{i}: #{car}" for car, i in ["chevy", "ford", "lexus"]
+#+END_SRC
+- The above is a postix form loop (similar to postfix/suffix if)
+- the "i" refers to iteration index and is optional
+- you can filter like so:
+#+BEGIN_SRC cs
+"car #{i}: #{car}" for car, i in ["chevy", "ford", "lexus"] when car is "ford"
+#output: [ 'car 1: ford' ]
+#+END_SRC
+- to iterate over properties in objects, use "of" instead of in:
+#+BEGIN_SRC cs
+"#{key} has value: #{val}" for key, val of x
+###
+[ 'quarter has value: 25',
+  'dime has value: 10',
+  'nickel has value: 5',
+  'penny has value: 1' ]
+###
+#+END_SRC
+- supports while loop just like regular JS while but it returns an
+  array of results like map function
+#+BEGIN_SRC cs
+num = 6
+minstrel = while num -= 1
+  num + " Brave Sir Robin ran away"
+#+END_SRC
+** Arrays
+- inspired by ruby's ranges:
+#+BEGIN_SRC cs
+x = [1..5] #creates array with values 1 through 5
+x[0..1] #calls JS slice - returns array with [1, 2] 
+x[0..1] = [-1, -2] #mutates array - x is now [-1, -2, 3, 4]
+#+END_SRC
+- use "in" operator to check if element is in array
+** Aliases & the Existential Operator
+- "@" symbol an alias for "this."
+- "::" symbols alias for "prototype"
+- "?" (existential operator) returns true unless variable is null or
+  undefined
+  - can be used in place of the || operator
+  - can be used to make a null check before accessing a property
+  - can be used to check if a property is a function before it's
+    called by placing ? before ()
+#+BEGIN_SRC cs
+x = 5
+alert x if x?             #alerts x
+x = "test" ? "impossible" #x is assigned value "test"
+x = {a: -> "a"}
+x.a?()                    #a is called because it's a function
+#+END_SRC
+
